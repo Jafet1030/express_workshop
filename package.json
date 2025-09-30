@@ -4,7 +4,12 @@
   "description": "An API REST using express.js",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://https://github.com/Jafet1030/express_workshop.git"
   },
   "keywords": [
     "api",
@@ -14,7 +19,12 @@
   ],
   "author": "Jafet Ibarra",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jafet1030/express_workshop/issues"
+  },
+  "homepage": "https://github.com/Jafet1030/express_workshop#readme",
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10"
   }
 }
