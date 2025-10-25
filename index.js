@@ -2,41 +2,46 @@ const express = require('express');
 const app = express();
 const {pokemon} = require('./pokedex.json');
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.get('/', (req, res) => {
-  res.status(200);
-  res.send('Bienvenido al Pokedex');
+  return res.status(200).send('Bienvenido al Pokedex');
 });
 
-app.get('/pokemon/all', (req, res) => {
-  res.status(200);
-  res.send(pokemon);
+app.post('/pokemon', (req, res) => {
+  return res.status(200).send(req.body);
 });
 
-app.get('/pokemon/:id', (req, res) => {
-  const id = req.params.id - 1;
-  if (id >= 0 && id < pokemon.length) {
-    res.status(200);
-    return res.send(pokemon[req.params.id - 1]);
-  }else {
-    res.status(404);
-    res.send('No se encontró el pokemon');
-  }
+app.get('/pokemon', (req, res) => {
+  return res.status(200).send(pokemon);
 });
 
-app.get('/pokemon/:name', (req, res) => {
-  const name = req.params.name;
-  for(i = 0; i < pokemon.length; i++) {
-    if (pokemon[i].name == name) {
-      res.status(200);
-      res.send(pokemon[i]);
+// Busqueda por ID
+app.get('/pokemon/:id', (req, res, next) => {
+    const id = parseInt(req.params.id-1); // convierto el parámetro a número
+    if (id >= 0 && id <= 150){
+        return res.status(200).send(pokemon[req.params.id -1]);
     }
-  }
-  res.status(404);
-  res.send('No se encontró el pokemon');
+    return res.status(404).send("El pokémon no se encuentró :(");
 });
 
+// Busqueda por nombre (name)
+app.get('/pokemon/name/:name', (req, res) => {
+  const name = req.params.name;
+    // validar con regex
+    if (!/^[A-Za-z]+$/.test(name)) {
+        return res.status(400).send("El nombre no es válido");
+    } 
+    const pk = pokemon.filter((p) =>{
+        return(p.name.toUpperCase() == name.toUpperCase()) && p;
+    });
+    if(pk.length > 0) {
+        return res.status(200).send(pk);
+    }
+    return res.status(404).send("El pokémon no se encontró");
+});
 
-
-app.listen(3000, () => {
-  console.log('Servidor escuchando en el puerto 3000');
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`Servidor escuchando en el puerto ${process.env.PORT || 3000}`);
 });
