@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-  return res.status(200).json({code: 1 , message: 'Bienvenido al Pokedex'});
+  return res.status(200).json({code: 200 , message: 'Bienvenido al Pokedex'});
 });
 
 app.use('/pokemon', pokemon);
